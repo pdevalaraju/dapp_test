@@ -1,0 +1,9 @@
+{
+  "port": 8000,
+  "files": ["./**/*.{html,htm,css,js}"],
+  "server": {
+    "baseDir": ["./public", "./client", "./client/src/contracts", "./crud"],
+ "allowSyntheticDefaultImports": true
+  }
+}
+
