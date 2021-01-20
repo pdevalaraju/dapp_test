@@ -47,9 +47,13 @@ const initContract = () => {
         );
         
         pupdeployer.methods.token_sale_address().call()
-        .then(function (result) {console.log(result);});
+        .then(function (result) {
+          pupsale_address = result;
+          console.log(result);});
         pupdeployer.methods.token_address().call()
-        .then(function (result) {console.log(result);});
+        .then(function (result) {
+          pup_address=result;
+          console.log(result);});
         return  [new web3.eth.Contract(PupperSale.abi, pupsale_address),
         new web3.eth.Contract(PupperCoin.abi, pup_address)];
      // return new web3.eth.Contract(PupperSale.abi, pupsale_address);
@@ -58,10 +62,9 @@ const initContract = () => {
 
 
 const initApp = () => {
-    
+ 
+  //token sale contract form variables
   const $buyTokens = document.getElementById("buyTokens");
- // const $buyaddress = document.getElementById('address0').value;
- // const $buyamount = document.getElementById("amount");
   const $buyTokensResult= document.getElementById("buyTokensResult");
   const $cap = document.getElementById("cap");
   const $capResult = document.getElementById("capResult");
@@ -89,7 +92,49 @@ const initApp = () => {
   const $finalizeResult = document.getElementById('finalizeResult');
   const $finalized = document.getElementById('finalized');
   const $finalizedResult = document.getElementById('finalizedResult');
-  
+  const $token = document.getElementById('token');
+  const $tokenResult = document.getElementById('tokenResult');
+  const $wallet = document.getElementById('wallet');
+  const $walletResult = document.getElementById('walletResult');
+ // const $tokenaddress = document.getElementById('tokenaddress');
+
+
+  //token contract form variables
+  const $decimals = document.getElementById('decimals');
+  const $decimalsResult = document.getElementById('decimalsResult');
+  const $name = document.getElementById('name');
+  const $nameResult = document.getElementById('nameResult');
+  const $symbol = document.getElementById('symbol');
+  const $symbolResult = document.getElementById('symbolResult');
+  const $totalSupply = document.getElementById('totalSupply');
+  const $totalSupplyResult = document.getElementById('totalSupplyResult');
+  const $renounceMinter = document.getElementById('renounceMinter');
+  const $renounceMinterResult = document.getElementById('renounceMinterResult');
+
+    
+  const $balanceOf = document.getElementById('balanceOf');
+  const $balanceOfResult = document.getElementById('balanceOfResult');
+  const $addMinter  = document.getElementById('addMinter');
+  const $addMinterResult  = document.getElementById('addMinterResult');
+  const $isMinter  = document.getElementById('isMinter');
+  const $isMinterResult  = document.getElementById('isMinterResult');
+  const $mint  = document.getElementById('mint');
+  const $mintResult  = document.getElementById('mintResult');
+  const $decreaseAllowance  = document.getElementById('decreaseAllowance');
+  const $decreaseAllowanceResult  = document.getElementById('decreaseAllowanceResult');
+  const $increaseAllowance  = document.getElementById('increaseAllowance');
+  const $increaseAllowanceResult  = document.getElementById('increaseAllowanceResult');
+  const $allowance  = document.getElementById('allowance');
+  const $allowanceResult  = document.getElementById('allowanceResult');
+  const $approve  = document.getElementById('approve');
+  const $approveResult  = document.getElementById('approveResult');
+  const $transfer  = document.getElementById('transfer');
+  const $transferResult  = document.getElementById('transferResult');
+  const $transferFrom  = document.getElementById('transferFrom');
+  const $transferFromResult = document.getElementById('transferFromResult');
+
+
+
   // const $contractResult = document.getElementById('contract-functions');
   let accounts = [];
 
@@ -101,7 +146,10 @@ const initApp = () => {
       $buyTokens.addEventListener('submit', (e) => {
         e.preventDefault();
         //console.log($buyaddress);
-        pupsale.methods.buyTokens(accounts[0]).send({from: accounts[0]})
+        const from_address = e.target.elements[0].value.toString().toLowerCase();
+        const eth_amount = parseInt(e.target.elements[1].value);
+       // window.prompt(from_address);
+        pupsale.methods.buyTokens(from_address).send({'from': accounts[0], 'Amount':eth_amount})
         .on('transactionHash', function(hash){
           $buyTokensResult.innerHTML = hash;
         })
@@ -120,7 +168,8 @@ const initApp = () => {
       $claimRefund.addEventListener('submit', (e) => {
         e.preventDefault();
         //console.log($buyaddress);
-        pupsale.methods.claimRefund(accounts[0]).send({from: accounts[0]})
+        const from_address = e.target.elements[0].value.toString().toLowerCase();
+        pupsale.methods.claimRefund(from_address).send({from: accounts[0]})
         .on('transactionHash', function(hash){
           $claimRefundResult.innerHTML = hash;
         })
@@ -280,6 +329,304 @@ const initApp = () => {
       });
     });
 
+
+    $token.addEventListener('submit', (e) => {
+      e.preventDefault();
+      pupsale.methods.token().call()
+      .then(function (result) {
+        $tokenResult.innerHTML = result;
+       })
+      .catch(_e => {
+        console.log(_e);
+        $tokenResult.innerHTML = `Ooops... there was an error while trying to get Data...`;
+      });
+    });
+
+
+    $wallet.addEventListener('submit', (e) => {
+      e.preventDefault();
+      pupsale.methods.wallet().call()
+      .then(function (result) {
+        $walletResult.innerHTML = result;
+       })
+      .catch(_e => {
+        console.log(_e);
+        $walletResult.innerHTML = `Ooops... there was an error while trying to get Data...`;
+      });
+    });
+
+
+    //token contract methods
+
+    $decimals.addEventListener('submit', (e) => {
+      e.preventDefault();
+      pupcoin.methods.decimals().call()
+      .then(function (result) {
+        $decimalsResult.innerHTML = result;
+       })
+      .catch(_e => {
+        console.log(_e);
+        $decimalsResult.innerHTML = `Ooops... there was an error while trying to get Data...`;
+      });
+    });
+
+    $name.addEventListener('submit', (e) => {
+      e.preventDefault();
+      pupcoin.methods.name().call()
+      .then(function (result) {
+        $nameResult.innerHTML = result;
+       })
+      .catch(_e => {
+        console.log(_e);
+        $nameResult.innerHTML = `Ooops... there was an error while trying to get Data...`;
+      });
+    });
+
+
+    $symbol.addEventListener('submit', (e) => {
+      e.preventDefault();
+      pupcoin.methods.symbol().call()
+      .then(function (result) {
+        $symbolResult.innerHTML = result;
+       })
+      .catch(_e => {
+        console.log(_e);
+        $symbolResult.innerHTML = `Ooops... there was an error while trying to get Data...`;
+      });
+    });
+
+
+    $totalSupply.addEventListener('submit', (e) => {
+      e.preventDefault();
+      pupcoin.methods.totalSupply().call()
+      .then(function (result) {
+        $totalSupplyResult.innerHTML = result;
+       })
+      .catch(_e => {
+        console.log(_e);
+        $totalSupplyResult.innerHTML = `Ooops... there was an error while trying to get Data...`;
+      });
+    });
+
+
+    $renounceMinter.addEventListener('submit', (e) => {
+      e.preventDefault();
+      pupcoin.methods.renounceMinter().call()
+      .then(function (result) {
+        $renounceMinterResult.innerHTML = result;
+       })
+      .catch(_e => {
+        console.log(_e);
+        $renounceMinterResult.innerHTML = `Ooops... there was an error while trying to get Data...`;
+      });
+    });
+
+
+    $balanceOf.addEventListener('submit', (e) => {
+      e.preventDefault();
+      //console.log($buyaddress);
+      const balof_address = e.target.elements[0].value.toString().toLowerCase();
+      pupcoin.methods.balanceOf(balof_address).send({from: accounts[0]})
+      .on('transactionHash', function(hash){
+        $balanceOfResult.innerHTML = hash;
+      })
+      .on('receipt', function(receipt){
+        $balanceOfResult.innerHTML = receipt;
+      })
+      .on('confirmation', function(confirmationNumber, receipt){
+         $balanceOfResult.innerHTML = `Your Transaction Confirmation # is: ${confirmationNumber} and receipt number is : ${receipt}`; })
+      .on('error', function(error){
+        // If a out of gas error, the second parameter is the receipt.
+        $balanceOfResult.innerHTML = error;
+      });
+    });
+
+
+    $addMinter.addEventListener('submit', (e) => {
+      e.preventDefault();
+      //console.log($buyaddress);
+      const addmint_address = e.target.elements[0].value.toString().toLowerCase();
+      pupcoin.methods.addMinter(addmint_address).send({from: accounts[0]})
+      .on('transactionHash', function(hash){
+        $addMinterResult.innerHTML = hash;
+      })
+      .on('receipt', function(receipt){
+        $addMinterResult.innerHTML = receipt;
+      })
+      .on('confirmation', function(confirmationNumber, receipt){
+         $addMinterResult.innerHTML = `Your Transaction Confirmation # is: ${confirmationNumber} and receipt number is : ${receipt}`; })
+      .on('error', function(error){
+        // If a out of gas error, the second parameter is the receipt.
+        $addMinterResult.innerHTML = error;
+      });
+    });
+
+    $isMinter.addEventListener('submit', (e) => {
+      e.preventDefault();
+      //console.log($buyaddress);
+      const ismint_address = e.target.elements[0].value.toString().toLowerCase();
+      pupcoin.methods.isMinter(ismint_address).send({from: accounts[0]})
+      .on('transactionHash', function(hash){
+        $isMinterResult.innerHTML = hash;
+      })
+      .on('receipt', function(receipt){
+        $isMinterResult.innerHTML = receipt;
+      })
+      .on('confirmation', function(confirmationNumber, receipt){
+         $isMinterResult.innerHTML = `Your Transaction Confirmation # is: ${confirmationNumber} and receipt number is : ${receipt}`; })
+      .on('error', function(error){
+        // If a out of gas error, the second parameter is the receipt.
+        $isMinterResult.innerHTML = error;
+      });
+    });
+
+
+    $mint.addEventListener('submit', (e) => {
+      e.preventDefault();
+      //console.log($buyaddress);
+      const mint_address = e.target.elements[0].value.toString().toLowerCase();
+      const mint_amount = parseInt(e.target.elements[1].value);
+      pupcoin.methods.mint(mint_address, mint_amount).send({from: accounts[0]})
+      .on('transactionHash', function(hash){
+        $mintResult.innerHTML = hash;
+      })
+      .on('receipt', function(receipt){
+        $mintResult.innerHTML = receipt;
+      })
+      .on('confirmation', function(confirmationNumber, receipt){
+         $mintResult.innerHTML = `Your Transaction Confirmation # is: ${confirmationNumber} and receipt number is : ${receipt}`; })
+      .on('error', function(error){
+        // If a out of gas error, the second parameter is the receipt.
+        $mintResult.innerHTML = error;
+      });
+    });
+
+
+    $decreaseAllowance.addEventListener('submit', (e) => {
+      e.preventDefault();
+      //console.log($buyaddress);
+      const allowance_address = e.target.elements[0].value.toString().toLowerCase();
+      const dAllowanceAmount = parseInt(e.target.elements[1].value);
+      pupcoin.methods.decreaseAllowance(allowance_address, dAllowanceAmount).send({from: accounts[0]})
+      .on('transactionHash', function(hash){
+        $decreaseAllowanceResult.innerHTML = hash;
+      })
+      .on('receipt', function(receipt){
+        $decreaseAllowanceResult.innerHTML = receipt;
+      })
+      .on('confirmation', function(confirmationNumber, receipt){
+         $decreaseAllowanceResult.innerHTML = `Your Transaction Confirmation # is: ${confirmationNumber} and receipt number is : ${receipt}`; })
+      .on('error', function(error){
+        // If a out of gas error, the second parameter is the receipt.
+        $decreaseAllowanceResult.innerHTML = error;
+      });
+    });
+
+   
+    
+    $increaseAllowance.addEventListener('submit', (e) => {
+      e.preventDefault();
+            
+      const allowance_address = e.target.elements[0].value.toString().toLowerCase();
+      const inAllowanceAmount = parseInt(e.target.elements[1].value);
+      pupcoin.methods.increaseAllowance(allowance_address, inAllowanceAmount).send({from: accounts[0]})
+      .on('transactionHash', function(hash){
+        $increaseAllowanceResult.innerHTML = hash;
+      })
+      .on('receipt', function(receipt){
+        $increaseAllowanceResult.innerHTML = receipt;
+      })
+      .on('confirmation', function(confirmationNumber, receipt){
+         $increaseAllowanceResult.innerHTML = `Your Transaction Confirmation # is: ${confirmationNumber} and receipt number is : ${receipt}`; })
+      .on('error', function(error){
+        // If a out of gas error, the second parameter is the receipt.
+        $increaseAllowanceResult.innerHTML = error;
+      });
+    });
+
+
+    $allowance.addEventListener('submit', (e) => {
+      e.preventDefault();
+      //console.log($buyaddress);
+      const allowance_address = e.target.elements[0].value.toString().toLowerCase();
+      pupcoin.methods.allowance(accounts[0], allowance_address).send({from: accounts[0]})
+      .on('transactionHash', function(hash){
+        $allowanceResult.innerHTML = hash;
+      })
+      .on('receipt', function(receipt){
+        $allowanceResult.innerHTML = receipt;
+      })
+      .on('confirmation', function(confirmationNumber, receipt){
+         $allowanceResult.innerHTML = `Your Transaction Confirmation # is: ${confirmationNumber} and receipt number is : ${receipt}`; })
+      .on('error', function(error){
+        // If a out of gas error, the second parameter is the receipt.
+        $allowanceResult.innerHTML = error;
+      });
+    });
+
+
+    $approve.addEventListener('submit', (e) => {
+      e.preventDefault();
+      //console.log($buyaddress);
+      const approve_address = e.target.elements[0].value.toString().toLowerCase();
+      const approveAmount = parseInt(e.target.elements[1].value);
+      pupcoin.methods.approve(approve_address, approveAmount).send({from: accounts[0]})
+      .on('transactionHash', function(hash){
+        $approveResult.innerHTML = hash;
+      })
+      .on('receipt', function(receipt){
+        $approveResult.innerHTML = receipt;
+      })
+      .on('confirmation', function(confirmationNumber, receipt){
+         $approveResult.innerHTML = `Your Transaction Confirmation # is: ${confirmationNumber} and receipt number is : ${receipt}`; })
+      .on('error', function(error){
+        // If a out of gas error, the second parameter is the receipt.
+        $approveResult.innerHTML = error;
+      });
+    });
+
+
+    $transfer.addEventListener('submit', (e) => {
+      e.preventDefault();
+      //console.log($buyaddress);
+      const transfer_address = e.target.elements[0].value.toString().toLowerCase();
+      const tAmount = parseInt(e.target.elements[1].value);
+      pupcoin.methods.transfer(transfer_address, tAmount).send({from: accounts[0]})
+      .on('transactionHash', function(hash){
+        $transferResult.innerHTML = hash;
+      })
+      .on('receipt', function(receipt){
+        $transferResult.innerHTML = receipt;
+      })
+      .on('confirmation', function(confirmationNumber, receipt){
+         $transferResult.innerHTML = `Your Transaction Confirmation # is: ${confirmationNumber} and receipt number is : ${receipt}`; })
+      .on('error', function(error){
+        // If a out of gas error, the second parameter is the receipt.
+        $transferResult.innerHTML = error;
+      });
+    });
+
+
+    $transferFrom.addEventListener('submit', (e) => {
+      e.preventDefault();
+      //console.log($buyaddress);
+      const transfer_from_address = e.target.elements[0].value.toString().toLowerCase();
+      const transfer_to_address = e.target.elements[0].value.toString().toLowerCase();
+      const tAmount = parseInt(e.target.elements[1].value);
+      pupcoin.methods.transferFrom(transfer_from_address, transfer_to_address, tAmount).send({from: accounts[0]})
+      .on('transactionHash', function(hash){
+        $transferFromResult.innerHTML = hash;
+      })
+      .on('receipt', function(receipt){
+        $transferFromResult.innerHTML = receipt;
+      })
+      .on('confirmation', function(confirmationNumber, receipt){
+         $transferFromResult.innerHTML = `Your Transaction Confirmation # is: ${confirmationNumber} and receipt number is : ${receipt}`; })
+      .on('error', function(error){
+        // If a out of gas error, the second parameter is the receipt.
+        $transferFromResult.innerHTML = error;
+      });
+    });
   
 
 
@@ -294,7 +641,9 @@ document.addEventListener('DOMContentLoaded', () => {
       contracts = initContract();
       pupsale=contracts[0];
       pupcoin=contracts[1]
-     //console.log(pupsale.address);
+     //console.log(pupcoin);
+     
+     //document.getElementById("TokenAddress").setAttribute("value", pupcoin.address);
       loadform()
       
     initApp(); 
@@ -310,7 +659,7 @@ const loadform = () => {
   //console.log("311");
   var k;
   for (k=0; k < contracts.length; k++){
-    console.log(k);
+
     var methods = contracts[k].methods;
     methods.f = function f() {};
     for(var method in methods){
@@ -342,6 +691,7 @@ const loadform = () => {
         };
         //window.prompt(func_args);
         var form = document.createElement("form");
+        form.setAttribute("name", func_names[i].split("(")[0]+"form_"+k); 
         form.setAttribute("id", func_names[i].split("(")[0]); 
         form.setAttribute("action", "");
         form.setAttribute("onsubmit", "return false");
@@ -384,7 +734,7 @@ const loadform = () => {
          // Create a submit button 
         var s = document.createElement("input"); 
         s.setAttribute("type", "submit"); 
-        s.setAttribute("id", func_names[i].split("(")[0]+"Id"); 
+        s.setAttribute("id", func_names[i].split("(")[0]+"Submit"); 
         s.setAttribute("class", "btn btn-primary");
         //s.setAttribute("width", "500"); 
         s.setAttribute("value", func_names[i].split("(")[0]); 
