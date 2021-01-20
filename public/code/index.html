@@ -1,0 +1,99 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="./tabs.css">
+
+    <script src="bundle.js"></script>
+  </head>
+  <body>
+    
+    
+    <div class="container">
+      
+      <div class="col-sm-10">
+
+        <div class="row">
+          <img src="./logo192.png">
+        </div>
+       
+          <div class="row">
+            <h1> SLPRCoin ICO</h1></img>
+          </div>
+
+          <div class="row">
+            
+            <div class="tab">
+              <button class="tablinks" onclick="openTab(event, 'loadcontract')"><img src="./favicon.ico"><b>Contract Data</b></button>
+              <button class="tablinks" onclick="openTab(event, 'tokens')"><img src="./favicon.ico"><b>Buy Coins</b></button>
+              <button class="tablinks" onclick="openTab(event, 'contract')"><img src="./favicon.ico"><b>Manage Contract</b></button>
+              <button class="tablinks" onclick="openTab(event, 'returns')"><img src="./favicon.ico"><b>Manage Investements</b></button>
+               
+            </div>
+          </div>
+
+          <div class="row">
+            
+              <Tab content>
+              <div id="loadcontract" class="tabcontent">
+                <input hidden id="contract-functions"></input> <!--onclick="loadform(event, 'load')"></button-->
+              </div>
+              
+              <div id="tokens" class="tabcontent">
+               <!-- place holder for dynamically populating the tab --> 
+              </div>
+              
+              <div id="contract" class="tabcontent">
+                <!-- place holder for dynamically populating the tab --> 
+              
+              </div>
+
+              <div id="returns" class="tabcontent">
+                <!-- place holder for dynamically populating the tab --> 
+              </div> 
+            
+          </div>
+          
+
+      </div>
+
+    </div>
+    
+    
+    <script>
+
+    //loadform()
+
+      function openTab(evt, tabName) {
+ 
+    	var i, tabcontent, tablinks;
+  
+      // Get all elements with class="tabcontent" and hide them
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      
+      // Get all elements with class="tablinks" and remove the class "active"
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      
+      // Show the current tab, and add an "active" class to the button that opened the tab
+      document.getElementById(tabName).style.display = "block";
+      evt.currentTarget.className += " active";
+      
+      }
+      
+
+      function loadform(evt, trigger) {
+        evt.preventDefault();
+        let func_count = document.getElementById('contract-functions').getAttribute('size');
+        let func_names = document.getElementById('contract-functions').getAttribute('name').split(",");
+      
+
+	  };
+    </script>
+    <!--/div-->
+  </body>
+</html>
